@@ -2,39 +2,33 @@ import jwt from "jsonwebtoken";
 import { Response } from "express";
 import mongoose from "mongoose";
 
-
 const generateToken = (
-    res: Response,
-    userId: mongoose.Types.ObjectId
+  res: Response,
+  userId: mongoose.Types.ObjectId
 ) => {
+  const token = jwt.sign(
+    { userId: userId.toString() },
+    process.env.JWT_SECRET as string,
+    {
+      expiresIn: "30d",
+    }
+  );
 
-    const token = jwt.sign(
-        { userId: userId.toString() },
-        process.env.JWT_SECRET as string,
-        {
-            expiresIn: "30d",
-        }
-    );
+  const isProduction = process.env.NODE_ENV === "production";
 
+  res.cookie("jwt", token, {
+    httpOnly: true,
 
-    res.cookie("jwt", token, {
+    // HTTPS only in production
+    secure: isProduction,
 
-        httpOnly: true,
+    // Required for cross-site cookies (Vercel <-> Render)
+    sameSite: isProduction ? "none" : "lax",
 
-        // localhost development
-        secure: false,
+    maxAge: 30 * 24 * 60 * 60 * 1000,
 
-        // allows different ports
-        sameSite: "lax",
-
-        maxAge: 30 * 24 * 60 * 60 * 1000,
-
-        path: "/",
-
-    });
-
-
+    path: "/",
+  });
 };
-
 
 export default generateToken;

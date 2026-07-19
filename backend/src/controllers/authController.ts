@@ -217,45 +217,26 @@ export const loginUser = async(
 
 
 // LOGOUT USER
+export const logoutUser = async (
+  req: Request,
+  res: Response
+): Promise<void> => {
 
-export const logoutUser = async(
-req:Request,
-res:Response
-):Promise<void>=>{
+  const isProduction = process.env.NODE_ENV === "production";
 
+  res.cookie("jwt", "", {
+    httpOnly: true,
+    secure: isProduction,
+    sameSite: isProduction ? "none" : "lax",
+    expires: new Date(0),
+    path: "/",
+  });
 
-res.cookie(
-"jwt",
-"",
-{
-
-httpOnly:true,
-
-secure:false,
-
-sameSite:"lax",
-
-expires:new Date(0)
-
-});
-
-
-res.status(200).json({
-
-message:"Logged out successfully"
-
-});
-
+  res.status(200).json({
+    message: "Logged out successfully",
+  });
 
 };
-
-
-
-
-
-
-
-
 
 // CURRENT USER
 
