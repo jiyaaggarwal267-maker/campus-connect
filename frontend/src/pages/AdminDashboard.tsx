@@ -38,7 +38,7 @@ const AdminDashboard: React.FC = () => {
   const [events,setEvents] = useState<any[]>([]);
 
 
-  const [isCreatingAnn,setIsCreatingAnn] = useState(false);
+  const [, setIsCreatingAnn] = useState(false);
 
   const [isCreatingEvent,setIsCreatingEvent] = useState(false);
   const [eventImage,setEventImage] = useState<File | null>(null);
