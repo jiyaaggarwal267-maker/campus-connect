@@ -224,14 +224,13 @@ export const logoutUser = async (
 
   const isProduction = process.env.NODE_ENV === "production";
 
-  res.cookie("jwt", "", {
-    httpOnly: true,
-    secure: isProduction,
-    sameSite: isProduction ? "none" : "lax",
-    expires: new Date(0),
-    path: "/",
-  });
-
+res.cookie("jwt", "", {
+  httpOnly: true,
+  secure: isProduction,
+  sameSite: isProduction ? "none" : "lax",
+  expires: new Date(0),
+  path: "/",
+});
   res.status(200).json({
     message: "Logged out successfully",
   });

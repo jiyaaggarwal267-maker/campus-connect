@@ -18,15 +18,9 @@ const generateToken = (
 
   res.cookie("jwt", token, {
     httpOnly: true,
-
-    // HTTPS only in production
     secure: isProduction,
-
-    // Required for cross-site cookies (Vercel <-> Render)
     sameSite: isProduction ? "none" : "lax",
-
     maxAge: 30 * 24 * 60 * 60 * 1000,
-
     path: "/",
   });
 };
